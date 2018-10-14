@@ -82,11 +82,17 @@ def checkLogin(username,password):
     else:
         return user
 
+def getSalt(username):
+    salt = query_db('SELECT salt FROM User WHERE email = ?', (username,), one=True)
+    if salt is None:
+        return None
+    else:
+        return salt['salt']
 
-def register(username,password,firstName,lastName):
+def register(username,password,firstName,lastName,salt):
     try:
-        user = mutate_db("INSERT INTO User (email, password, firstName, lastName) VALUES (?,?,?,?)",
-                    (username, password, firstName, lastName))
+        user = mutate_db("INSERT INTO User (email, password, firstName, lastName, salt) VALUES (?,?,?,?,?)",
+                    (username, password, firstName, lastName, salt))
         return True
     except Exception as e:
         app.logger.error(e)

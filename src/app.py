@@ -1,16 +1,18 @@
-from flask import Flask, request, redirect, url_for, render_template, send_file, session, current_app, after_this_request
-import os, uuid
+import os
+import uuid
+import hashlib
 import logging
-from db.database import init_db, checkLogin, register, addFile, collectFile, userUploads
 
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Flask, request, redirect, url_for, render_template, send_file, session, current_app, after_this_request
+
+from db.database import init_db, checkLogin, register, addFile, collectFile, userUploads, getSalt
+
 
 app = Flask(__name__)
 
 init_db()
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-
 UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -28,10 +30,13 @@ def signup():
     if request.method == 'GET':
         return render_template('auth/signup.html')
     else:
+        salt = uuid.uuid4().hex
+        password = hashlib.sha512((request.form['password'] + salt).encode('utf-8')).hexdigest()
         success = register(request.form['username'],
-                            request.form['password'],
+                            password,
                             request.form['firstName'],
-                            request.form['lastName'])
+                            request.form['lastName'],
+                            salt)
         if success is True:
             return "<script> alert('Signup successful'); window.location.href = '/login'; </script>"
         else:
@@ -43,12 +48,17 @@ def login():
     if request.method == 'GET':
         return render_template('auth/login.html')
     else:
-        user = checkLogin(request.form['username'], request.form['password'])
-        if user is False:
+        salt = getSalt(request.form['username'])
+        if salt is None:
             return "<script> alert('Incorrect credentials'); window.history.back(); </script>"
         else:
-            session["user"] = user
-            return redirect(url_for('index'))
+            password = hashlib.sha512((request.form['password'] + salt).encode('utf-8')).hexdigest()
+            user = checkLogin(request.form['username'], password)
+            if user is False:
+                return "<script> alert('Incorrect credentials'); window.history.back(); </script>"
+            else:
+                session["user"] = user
+                return redirect(url_for('index'))
 
 
 @app.route('/logout')

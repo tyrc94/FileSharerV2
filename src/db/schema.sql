@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS User (
     email     STRING  UNIQUE,
     password  STRING  NOT NULL,
     firstName STRING,
-    lastName  STRING
+    lastName  STRING,
+	salt	  STRING NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `OneOffFiles` (
