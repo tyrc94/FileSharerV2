@@ -3,7 +3,7 @@ from flask import g, Flask
 from pprint import pprint
 app = Flask(__name__)
 
-DATABASE = 'database.db'
+DATABASE = 'app/db/database.db'
 
 def make_dicts(cursor, row):
     return dict((cursor.description[idx][0], value)
