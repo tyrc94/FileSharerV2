@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block header %}
+  <h1>{% block title %}Upload Success!{% endblock %}</h1>
+{% endblock %}
+
+
+{% block content %}
+<h1>Upload successful!</h1>
+<br>
+<h2>Your unique download link is below:</h2>
+
+<div id="div-target">
+    <h4>{{ url_list[0] }}</h4>
+</div>
+<button class="btn" data-clipboard-action="copy" data-clipboard-target="#div-target">Copy</button>
+<script>
+    var clipboard = new Clipboard('.btn');
+
+    clipboard.on('success', function(e) {
+        console.log(e);
+    });
+
+    clipboard.on('error', function(e) {
+        console.log(e);
+    });
+    </script>
+{% endblock %}

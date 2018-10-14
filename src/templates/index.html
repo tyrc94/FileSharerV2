@@ -6,4 +6,33 @@
 
 {% block content %}
 
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3">Welcome to FileSharer</h1>
+      <p>This website allows you to share files which can be downloaded only once -- think of it as the Snapchat for files!</p>
+      <!-- <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p> -->
+    </div>
+  </div>
+
+<h1>Upload your files here</h1>
+<form action="upload" method="POST" enctype="multipart/form-data">
+  <div class="input-group mb-3">
+      <div class="custom-file">
+          <input type="file" class="custom-file-input" id="inputGroupFile02" name="files"/>
+          <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+      </div>
+      <div class="input-group-append">
+          <button type="submit" class="btn btn-primary">Upload</button>
+      </div>
+  </div>
+</form>
+<script>
+    $('#inputGroupFile02').on('change',function(){
+        //get the file name
+        var fileName = $(this).val();
+        //replace the "Choose a file" label
+        $(this).next('.custom-file-label').html(fileName);
+    })
+</script>
 {% endblock %}

@@ -18,22 +18,22 @@
   </head>
 
   <body class="text-center">
-    <form action="login" method="POST" class="form-signin">
+    <form action="/signup" method="POST" class="form-signin">
       <h1>FileSharer</h1>
       <!-- <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"> -->
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <h1 class="h3 mb-3 font-weight-normal">Registration Form</h1>
+      <label for="firstName" class="sr-only">First Name</label>
+      <input type="text" id="firstName" name="firstName" class="form-control" placeholder="First Name" required autofocus>
+      <label for="lastName" class="sr-only">Last Name</label>
+      <input type="text" id="lastName" name="lastName" class="form-control" placeholder="First Name" required>
       <label for="username" class="sr-only">Email address</label>
-      <input type="email" id="username" name="username" class="form-control" placeholder="Email address" required autofocus>
+      <input type="email" id="username" name="username" class="form-control" placeholder="Email address" required>
       <label for="password" class="sr-only">Password</label>
       <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-      <div class="checkbox mb-3">
-        <label>
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-      </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
       <br>
-      <p>New? Click <a href="/signup">here</a> to register.</p>
+      <p>Already a user? Click <a href="/login">here</a> to sign in.</p>
 
       <p class="mt-5 mb-3 text-muted">&copy; 2018 Tyrell Carew</p>
     </form>

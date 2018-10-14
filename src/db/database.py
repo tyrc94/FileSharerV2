@@ -1,9 +1,10 @@
 import sqlite3
 from flask import g, Flask
 from pprint import pprint
+import logging
 app = Flask(__name__)
 
-DATABASE = 'app/db/database.db'
+DATABASE = 'db/database.db'
 
 def make_dicts(cursor, row):
     return dict((cursor.description[idx][0], value)
@@ -58,15 +59,15 @@ def addFile(uid, filename, user, requireLogin = False, expire = None, password =
 
 
 def userUploads(username):
-    uploads = query_db("SELECT * FROM OneOffFiles WHERE userId = ?", username)
-    #print uploads
+    #uploads = query_db("SELECT * FROM OneOffFiles WHERE userId = ?", [username])
+    uploads = query_db("SELECT uid, filename, collected FROM OneOffFiles WHERE userId = ?", [username])
     if username is None:
         return False
     else:
         return uploads
 
 
-def collectFile(uid, user = None, requireLogin = False): #Sets the collected file to be True (or 1)
+def collectFile(uid, user = None, requireLogin = False): # Sets the collected file to be True (or 1)
     mutate_db("UPDATE OneOffFiles SET collected = ?, collectedUserId = ? WHERE uid = ?", (1, user, uid))
     if requireLogin:
         return 1
