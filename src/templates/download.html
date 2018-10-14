@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FileSharer - Downloading...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  </head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark top">
+        <a class="navbar-brand" href="/">{% if 'user' in session %} {{session['user']['firstName']}} {% else %} FileSharer {% endif %}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          {% if 'user' in session %}
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/upload_list">Uploads</a>
+            </li>
+          </ul>
+            <ul class="navbar-nav">
+              <li class="nav-item active">
+                  <a class="nav-link" href="/logout"> Logout</a>
+              </li>
+            </ul>
+          {% endif %}
+        </div>
+      </nav>
+      <br>
+
+      <h1>You are downloading the file: {{ fname }}</h1>
+      <h2>Click <a class="downloadLink" href="{{ url_for('download_file',id=id, filename=filename) }}">here</a> to begin your download.</h2>
+
+</body>
+
+<script>
+  $(".downloadLink").click(
+    function(e) {   
+        e.preventDefault();
+
+        //open download link in new page
+        window.open( $(this).attr("href") );
+
+        //redirect current page to success page
+        window.location="/";
+        window.focus();
+    }
+);
+</script>
+

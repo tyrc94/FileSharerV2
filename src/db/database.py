@@ -50,7 +50,7 @@ def close_connection(exception):
 
 
 def addFile(uid, filename, user, requireLogin = False, expire = None, password = None):
-    mutate_db("INSERT INTO OneOffFiles (userId, uid, filename, expire, password, requireLogin) VALUES (?,?,?,?,?,?)",
+    mutate_db("INSERT INTO OneOffFiles (userId, uid, filename, expire, password, requireLogin, uploadTime) VALUES (?,?,?,?,?,?, datetime('now'))",
         [user, uid, filename, expire, password, requireLogin])
     if requireLogin:
         requireLogin = 1
@@ -60,7 +60,7 @@ def addFile(uid, filename, user, requireLogin = False, expire = None, password =
 
 def userUploads(username):
     #uploads = query_db("SELECT * FROM OneOffFiles WHERE userId = ?", [username])
-    uploads = query_db("SELECT uid, filename, collected FROM OneOffFiles WHERE userId = ?", [username])
+    uploads = query_db("SELECT uid, filename, collected, uploadTime, downloadTime FROM OneOffFiles WHERE userId = ?", [username])
     if username is None:
         return False
     else:
@@ -68,7 +68,7 @@ def userUploads(username):
 
 
 def collectFile(uid, user = None, requireLogin = False): # Sets the collected file to be True (or 1)
-    mutate_db("UPDATE OneOffFiles SET collected = ?, collectedUserId = ? WHERE uid = ?", (1, user, uid))
+    mutate_db("UPDATE OneOffFiles SET collected = ?, collectedUserId = ?, downloadTime = datetime('now') WHERE uid = ?", (1, user, uid))
     if requireLogin:
         return 1
     else:

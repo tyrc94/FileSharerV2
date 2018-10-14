@@ -117,7 +117,7 @@ def uploadList():
         return redirect(url_for('login'))  # Redirects user to login page
     else:
         username = session['user']['id']
-        headers = ["File ID", "Filename", "Collected"]
+        headers = ["File ID", "Filename", "Collected", "Upload Timestamp", "Download Timestamp"]
         data = userUploads(username)
         return render_template('upload_list.html', **locals())
 
